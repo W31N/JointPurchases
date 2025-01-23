@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 public class GroupPurchaseRepresentation extends RepresentationModel<GroupPurchaseRepresentation> {
     private String productName;
     private Double productPrice;
+    private String description;
     private LocalDateTime deadline;
     private Integer totalQuantity;
     private Integer maxQuantity;
@@ -29,6 +30,14 @@ public class GroupPurchaseRepresentation extends RepresentationModel<GroupPurcha
 
     public void setProductPrice(Double productPrice) {
         this.productPrice = productPrice;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public LocalDateTime getDeadline() {

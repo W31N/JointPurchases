@@ -1,0 +1,65 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.example.jointperchasesnew";
+option java_outer_classname = "JointPurchasesProtos";
+option optimize_for = SPEED;
+
+import "google/protobuf/timestamp.proto";
+
+package jointpurchase;
+
+service GroupPurchaseService {
+  rpc Deposit(UserDepositRequest) returns (UserResponse);
+
+  rpc AddUserOrder(AddUserOrderRequest) returns (UserOrderResponse);
+
+  rpc CreateGroupPurchase(CreateGroupPurchaseRequest) returns (GroupPurchaseResponse);
+}
+
+message UserDepositRequest {
+  string username = 1;
+  double amount = 2;
+}
+
+message UserResponse {
+  string username = 1;
+  double balance = 2;
+}
+
+message AddUserOrderRequest {
+  string username = 1;
+  string product_name = 2;
+  int32 quantity = 3;
+}
+
+message UserOrderResponse {
+  string username = 1;
+  string product_name = 2;
+  int32 quantity = 3;
+  double total_price = 4;
+}
+
+message CreateGroupPurchaseRequest {
+  string product_name = 1;
+  double product_price = 2;
+  string description = 3;
+  google.protobuf.Timestamp deadline = 4;
+  int32 max_quantity = 5;
+}
+
+message GroupPurchaseResponse {
+  string product_name = 1;
+  double product_price = 2;
+  string description = 3;
+  google.protobuf.Timestamp deadline = 4;
+  int32 total_quantity = 5;
+  int32 max_quantity = 6;
+  enum PurchaseStatus {
+    OPEN = 0;
+    CLOSED = 1;
+    COMPLETED = 2;
+  }
+  PurchaseStatus status = 7;
+}
+

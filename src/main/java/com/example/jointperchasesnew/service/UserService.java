@@ -14,4 +14,6 @@ public interface UserService {
     UserRepresentation update(UserRegistrationDto userRegistrationDto);
     UserRepresentation deposit(UserReplenishmentDto userReplenishmentDto);
     public User getUserDataForDeposit(UserReplenishmentDto userReplenishmentDto);
+    public CollectionModel<UserRepresentation> getAllUsers ();
+    public Iterable<User> getAllDataUsers();
 }

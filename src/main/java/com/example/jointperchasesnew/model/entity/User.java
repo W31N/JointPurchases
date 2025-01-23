@@ -4,6 +4,8 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -23,6 +25,7 @@ public class User extends BaseEntity {
         this.balance += amount;
     }
 
+    @NotNull(message = "Username cannot be null")
     public String getUsername() {
         return username;
     }
@@ -31,6 +34,7 @@ public class User extends BaseEntity {
         this.username = username;
     }
 
+    @NotNull(message = "Password cannot be null")
     public String getPassword() {
         return password;
     }
@@ -39,6 +43,7 @@ public class User extends BaseEntity {
         this.password = password;
     }
 
+    @PositiveOrZero(message = "Balance cannot be negative")
     public Double getBalance() {
         return balance;
     }
@@ -47,7 +52,7 @@ public class User extends BaseEntity {
         this.balance = balance;
     }
 
-    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "user")//CascadeType change
+    @OneToMany(cascade = {CascadeType.ALL}, mappedBy = "user")
     public Set<UserOrder> getOrders() {
         return orders;
     }

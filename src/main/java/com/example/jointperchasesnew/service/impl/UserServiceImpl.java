@@ -1,5 +1,7 @@
 package com.example.jointperchasesnew.service.impl;
 
+import com.example.jointperchasesnew.controller.UserController;
+import com.example.jointperchasesnew.controller.UserOrderController;
 import com.example.jointperchasesnew.dto.UserRegistrationDto;
 import com.example.jointperchasesnew.dto.UserReplenishmentDto;
 import com.example.jointperchasesnew.exception.UserAlreadyExistException;
@@ -10,10 +12,12 @@ import com.example.jointperchasesnew.representation.UserRepresentation;
 import com.example.jointperchasesnew.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
@@ -24,7 +28,7 @@ public class UserServiceImpl implements UserService {
 
     private UserRepository userRepository;
 
-    private ModelMapper modelMapper;
+    private final ModelMapper modelMapper;
 
     public UserServiceImpl(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
@@ -97,16 +101,31 @@ public class UserServiceImpl implements UserService {
         return userRepository.saveAndFlush(user);
     }
 
+    @Override
+    public CollectionModel<UserRepresentation> getAllUsers() {
+        List<User> users = userRepository.findAll();
+
+        List<UserRepresentation> userRepresentations = users.stream()
+                .map(user -> {
+                    UserRepresentation representation = modelMapper.map(user, UserRepresentation.class);
+                    addLinks(user.getUsername(), representation);
+                    return representation;
+                })
+                .toList();
+
+        return CollectionModel.of(userRepresentations);
+    }
+
+    @Override
+    public Iterable<User> getAllDataUsers() {
+        return userRepository.findAll();
+    }
+
+
     private UserRepresentation addLinks(String username, UserRepresentation userRepresentation) {
         Link selfLink = linkTo(methodOn(UserController.class).getUser(username)).withSelfRel();
-        Link channelLink = linkTo(methodOn(ChannelController.class).getChannel(username)).withRel("channel");
-        Link subsLink = linkTo(methodOn(SubscriptionController.class).getSubscriptionsForUser(
-                username, 1, 5
-        )).withRel("subscriptions");
-        Link depositLink = linkTo(methodOn(UserController.class).deposit(null)).withRel("deposit")
-                .withName("Deposit")
-                .withType("PATCH");
-        userRepresentation.add(selfLink).add(channelLink).add(subsLink).add(depositLink);
+        Link ordersLink = linkTo(methodOn(UserOrderController.class).getUserOrders(username)).withRel("orders");
+        userRepresentation.add(selfLink).add(ordersLink);
         return userRepresentation;
     }
 

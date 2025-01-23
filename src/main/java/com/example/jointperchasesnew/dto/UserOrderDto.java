@@ -1,17 +1,14 @@
-package com.example.jointperchasesnew.representation;
+package com.example.jointperchasesnew.dto;
 
-import org.springframework.hateoas.RepresentationModel;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
-public class UserOrderRepresentation extends RepresentationModel<UserOrderRepresentation> {
+public class UserOrderDto {
     private String username;
     private String productName;
     private int quantity;
-    private double totalPrice;
 
-    public UserOrderRepresentation() {
-
-    }
-
+    @NotBlank(message = "Username can't be blank")
     public String getUsername() {
         return username;
     }
@@ -20,6 +17,7 @@ public class UserOrderRepresentation extends RepresentationModel<UserOrderRepres
         this.username = username;
     }
 
+    @NotBlank(message = "Product name can't be blank")
     public String getProductName() {
         return productName;
     }
@@ -28,19 +26,12 @@ public class UserOrderRepresentation extends RepresentationModel<UserOrderRepres
         this.productName = productName;
     }
 
+    @Positive(message = "Quantity must be positive")
     public int getQuantity() {
         return quantity;
     }
 
     public void setQuantity(int quantity) {
         this.quantity = quantity;
-    }
-
-    public double getTotalPrice() {
-        return totalPrice;
-    }
-
-    public void setTotalPrice(double totalPrice) {
-        this.totalPrice = totalPrice;
     }
 }

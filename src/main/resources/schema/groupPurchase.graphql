@@ -1,0 +1,36 @@
+extend type Query {
+    groupPurchase(productName: String!): GroupPurchase
+    allGroupPurchases: [GroupPurchase]
+}
+
+extend type Mutation {
+    createGroupPurchase(input: GroupPurchaseInput!): GroupPurchase!
+    cancelGroupPurchase(productName: String!): Boolean!
+}
+
+type GroupPurchase {
+    productName: String!
+    productPrice: Float!
+    description: String!
+    created: String!
+    updated: String!
+    deadline: String!
+    maxQuantity: Int!
+    totalQuantity: Int!
+    status: GroupPurchaseStatus!
+    orders: [UserOrder]
+}
+
+input GroupPurchaseInput {
+    productName: String!
+    productPrice: Float!
+    description: String!
+    deadline: String!
+    maxQuantity: Int!
+}
+
+enum GroupPurchaseStatus{
+    OPEN
+    CLOSED
+    COMPLETED
+}

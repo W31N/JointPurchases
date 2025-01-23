@@ -3,6 +3,7 @@ package com.example.jointperchasesnew.model.entity;
 import com.example.jointperchasesnew.model.enums.PurchaseStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.PositiveOrZero;
 
 import java.time.LocalDateTime;
@@ -12,8 +13,10 @@ import java.util.Set;
 @Entity
 @Table(name = "group_purchases")
 public class GroupPurchase extends BaseEntity {
-    private Product product;
+    private String productName;
+    private Double productPrice;
     private LocalDateTime deadline;
+    private String description;
     private Integer totalQuantity = 0;
     private Integer maxQuantity;
     private PurchaseStatus status = PurchaseStatus.OPEN;
@@ -27,15 +30,31 @@ public class GroupPurchase extends BaseEntity {
         this.totalQuantity += order.getQuantity();
     }
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    @NotNull(message = "The product cannot be null")
-    public Product getProduct() {
-        return product;
+    @NotNull(message = "Product name cannot be null")
+    public String getProductName() {
+        return productName;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    @Positive(message = "Product price must be positive")
+    public Double getProductPrice() {
+        return productPrice;
+    }
+
+    public void setProductPrice(Double productPrice) {
+        this.productPrice = productPrice;
+    }
+
+    @NotNull(message = "Description cannot be null")
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     @NotNull(message = "The deadline cannot be null")

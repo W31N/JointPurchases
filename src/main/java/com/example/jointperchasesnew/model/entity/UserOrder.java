@@ -18,7 +18,7 @@ public class UserOrder extends BaseEntity {
         this.user = user;
         this.groupPurchase = groupPurchase;
         this.quantity = quantity;
-        this.totalPrice = quantity * groupPurchase.getProduct().getPrice();
+        this.totalPrice = quantity * groupPurchase.getProductPrice();
     }
 
     public UserOrder() {

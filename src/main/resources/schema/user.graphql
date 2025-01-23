@@ -1,0 +1,25 @@
+type Query {
+    user(username: String!): User!
+    allUsers: [User]
+}
+
+type Mutation {
+    registerUser(user: UserRegistrationInput!): User!
+    depositUser(user: UserReplenishmentInput!): User!
+}
+
+type User {
+    username: String!
+    balance: Float!
+    orders: [UserOrder]
+}
+
+input UserRegistrationInput {
+    username: String!
+    password: String!
+}
+
+input UserReplenishmentInput {
+    username: String!
+    depositAmount: Float!
+}

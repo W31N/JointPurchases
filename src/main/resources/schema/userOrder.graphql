@@ -1,0 +1,30 @@
+extend type Query {
+    allUserOrders: [UserOrder]
+    userOrders(username: String!): [UserOrder]
+    groupPurchaseOrders(productName: String!): [UserOrder]
+}
+
+extend type Mutation {
+    addUserOrder(userOrder: UserOrderInput!): UserOrder!
+    cancelOrder(orderCancellation: OrderCancellationInput!): Boolean!
+}
+
+type UserOrder {
+    user: User!
+    GroupPurchase: GroupPurchase!
+    quantity: Int!
+    totalPrice: Float!
+    created: String!
+    updated: String!
+}
+
+input UserOrderInput {
+    username: String!
+    productName: String!
+    quantity: Int!
+}
+
+input OrderCancellationInput{
+    username: String!
+    productName: String!
+}
